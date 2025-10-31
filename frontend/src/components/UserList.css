@@ -1,0 +1,99 @@
+/* 🎨 Estilos generales */
+.container {
+  width: 80%;
+  margin: 20px auto;
+  font-family: "Segoe UI", sans-serif;
+  color: #222;
+}
+
+/* 🧱 Título */
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* 🧩 Formulario */
+.formulario {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.formulario input {
+  padding: 8px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.formulario input:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 4px #28a74580;
+}
+
+.formulario button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.formulario button:hover {
+  background-color: #218838;
+}
+
+/* 📋 Tabla */
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.tabla th {
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 10px;
+}
+
+.tabla td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+/* 🔘 Botones de acción */
+.editar {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: 0.2s;
+}
+
+.editar:hover {
+  background-color: #0056b3;
+}
+
+.eliminar {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.eliminar:hover {
+  background-color: #b02a37;
+}
