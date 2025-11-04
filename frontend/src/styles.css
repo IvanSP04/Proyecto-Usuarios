@@ -1,0 +1,95 @@
+/* ======== ESTILOS GENERALES ======== */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #e3f2fd, #f8f9fa); /* Fondo suave */
+  margin: 0;
+  color: #212529;
+}
+
+/* ======== ENCABEZADO ======== */
+.header-bar {
+  background-color: #0d6efd;
+  color: white;
+  padding: 0.8rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centrado horizontal */
+  gap: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.brand-logo {
+  height: 65px; /* un poco más grande */
+}
+
+.brand-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/* ======== ESLOGAN ======== */
+.app-title {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+/* ======== LOGIN ======== */
+.login-container {
+  background-color: white;
+  max-width: 400px;
+  margin: 3rem auto; /* centrado y con margen superior */
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center; /* centra todo el texto */
+}
+
+.login-container h2 {
+  color: #0d6efd;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.login-container label {
+  display: block;
+  text-align: left;
+  margin-bottom: 0.3rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.login-container button {
+  width: 100%;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-container button:hover {
+  background-color: #0b5ed7;
+}
+
+.login-container p {
+  margin-top: 10px;
+  color: #333;
+}
