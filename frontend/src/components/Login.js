@@ -3,65 +3,86 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  // Estados para guardar los datos del formulario
+  const [esRegistro, setEsRegistro] = useState(false);
+  const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mensaje, setMensaje] = useState('');
   const navigate = useNavigate();
 
-  // Función que se ejecuta al enviar el formulario
-  function handleLogin(event) {
-    event.preventDefault(); // Evita que la página se recargue
-
-    // Enviamos el email y contraseña al backend
-    axios.post('http://localhost:5001/api/login', {
-      email: email,
-      password: password
-    })
-      .then(function (respuesta) {
-        setMensaje("Bienvenido " + respuesta.data.usuario.nombre);
-
-        // Redirige a la página principal después de 1 segundo
-        setTimeout(() => {
-          navigate('/usuarios');
-        }, 1000);
-      })
-      .catch(function (error) {
-        if (error.response) {
-          setMensaje(error.response.data.error);
-        } else {
-          setMensaje("No se pudo conectar con el servidor");
-        }
-      });
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (esRegistro) {
+      axios.post('http://localhost:5001/api/registro', { nombre, email, password })
+        .then(() => {
+          setMensaje("Registro exitoso");
+          setEsRegistro(false);
+          setNombre('');
+          setEmail('');
+          setPassword('');
+        })
+        .catch(() => {
+          setMensaje("Error al registrar");
+        });
+    } else {
+      axios.post('http://localhost:5001/api/login', { email, password })
+        .then((res) => {
+          setMensaje("Bienvenido " + res.data.usuario.nombre);
+          setTimeout(() => navigate('/usuarios'), 1000);
+        })
+        .catch(() => {
+          setMensaje("Error al iniciar sesión");
+        });
+    }
+  };
 
   return (
-    <div className="login-page">
-      <div className="login-box">
-        <img src="/logo.proyecto.png" alt="Logo" className="login-logo" />
-        <h2>Iniciar Sesión</h2>
-        <form onSubmit={handleLogin}>
-          <label>Correo:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+    <div className="login-container">
+      <h2>{esRegistro ? 'Registro' : 'Iniciar Sesión'}</h2>
+      
+      <form onSubmit={handleSubmit}>
+        {esRegistro && (
+          <div>
+            <label>Nombre:</label>
+            <input
+              type="text"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              required
+            />
+          </div>
+        )}
 
-          <label>Contraseña:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        <label>Correo:</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-          <button type="submit">Entrar</button>
-        </form>
+        <label>Contraseña:</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-        {mensaje && <p className="mensaje">{mensaje}</p>}
-      </div>
+        <button type="submit">
+          {esRegistro ? 'Registrarse' : 'Entrar'}
+        </button>
+      </form>
+
+      {mensaje && <p>{mensaje}</p>}
+
+      <p>
+        {esRegistro ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}
+        <button onClick={() => setEsRegistro(!esRegistro)}>
+          {esRegistro ? 'Iniciar sesión' : 'Registrarse'}
+        </button>
+      </p>
     </div>
   );
 }
