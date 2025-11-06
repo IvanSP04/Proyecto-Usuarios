@@ -2,16 +2,14 @@ const express = require('express'); // Framework para crear el servidor
 const cors = require('cors'); // Permite que el frontend (React) se comunique con el backend
 const db = require('./config/database'); // Conexión a MySQL
 
-// ----------------------------------------------------------
-// CONFIGURACIÓN BÁSICA DEL SERVIDOR
-// ----------------------------------------------------------
+
+// CONFIGURACIÓN DEL SERVIDOR
 const app = express(); // Creamos la aplicación de Express
 app.use(cors()); // Permitimos solicitudes desde otros orígenes (como React)
 app.use(express.json()); // Para que el servidor entienda datos en formato JSON
 
-// ----------------------------------------------------------
 // RUTA: OBTENER TODOS LOS USUARIOS
-// ----------------------------------------------------------
+
 app.get('/api/usuarios', (req, res) => {
   // Consulta SQL: traer todos los registros de la tabla "usuarios"
   db.query('SELECT * FROM usuarios', (err, results) => {
@@ -20,9 +18,8 @@ app.get('/api/usuarios', (req, res) => {
   });
 });
 
-// ----------------------------------------------------------
 // RUTA: CREAR UN NUEVO USUARIO
-// ----------------------------------------------------------
+
 
 app.post('/api/usuarios', (req, res) => {
   // Obtenemos los datos que vienen del frontend
@@ -41,9 +38,8 @@ app.post('/api/usuarios', (req, res) => {
   });
 });
 
-// ----------------------------------------------------------
 // RUTA: ACTUALIZAR UN USUARIO EXISTENTE
-// ----------------------------------------------------------
+
 app.put('/api/usuarios/:id', (req, res) => {
   const { id } = req.params; // Obtenemos el ID de la URL
   const { nombre, email, telefono } = req.body; // Obtenemos los nuevos datos
@@ -56,9 +52,8 @@ app.put('/api/usuarios/:id', (req, res) => {
   });
 });
 
-// ----------------------------------------------------------
 // RUTA: ELIMINAR UN USUARIO
-// ----------------------------------------------------------
+
 app.delete('/api/usuarios/:id', (req, res) => {
   const { id } = req.params; // Obtenemos el ID de la URL
 
@@ -70,9 +65,8 @@ app.delete('/api/usuarios/:id', (req, res) => {
   });
 });
 
-// ----------------------------------------------------------
 // RUTA: LOGIN DE USUARIOS
-// ----------------------------------------------------------
+
 app.post('/api/login', (req, res) => {
   // Obtenemos los datos del cuerpo de la petición (correo y contraseña)
   const { email, password } = req.body;
@@ -115,9 +109,7 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-// ----------------------------------------------------------
 // INICIO DEL SERVIDOR
-// ----------------------------------------------------------
 const PORT = 5001; // Puerto en el que correrá el backend
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
