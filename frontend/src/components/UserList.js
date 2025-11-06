@@ -1,106 +1,38 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./UserList.css"; // 🎨 Importa el CSS moderno
+import axios from "axios"; // Esto es para hacerle las peticiones al back
+import UserForm from "./UserForm";
 
 function UserList() {
   const [usuarios, setUsuarios] = useState([]);
-  const [nombre, setNombre] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [editId, setEditId] = useState(null);
+  const [usuarioEditando, setUsuarioEditando] = useState(null);
 
-  // 🟢 Obtener usuarios de la base de datos
-  useEffect(() => {
-    fetchUsuarios();
+  useEffect(() => { // Al iniciar el componente llamo a la función que trae todos los usuarios desde el backend
+  cargarUsuarios();
   }, []);
 
-  const fetchUsuarios = async () => {
-    try {
-      const res = await axios.get("http://localhost:5001/api/usuarios");
-      setUsuarios(res.data);
-    } catch (err) {
-      console.error("Error al obtener usuarios:", err);
-    }
+  const cargarUsuarios = async () => { // Pido los usuarios al servidor y los guardo en el estado para mostrarlos en pantalla.
+  const res = await axios.get("http://localhost:5001/api/usuarios");
+    setUsuarios(res.data);
   };
 
-  // 🟢 Guardar o actualizar usuario
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const nuevoUsuario = { nombre, email, telefono };
-
-    try {
-      if (editId) {
-        await axios.put(`http://localhost:5001/api/usuarios/${editId}`, nuevoUsuario);
-      } else {
-        await axios.post("http://localhost:5001/api/usuarios", nuevoUsuario);
-      }
-
-      // Limpiar formulario
-      setNombre("");
-      setEmail("");
-      setTelefono("");
-      setEditId(null);
-      fetchUsuarios();
-    } catch (err) {
-      console.error("Error al guardar usuario:", err);
-    }
-  };
-
-  // 🟡 Editar usuario
-  const handleEdit = (usuario) => {
-    setEditId(usuario.id);
-    setNombre(usuario.nombre);
-    setEmail(usuario.email);
-    setTelefono(usuario.telefono);
-  };
-
-  // 🔴 Eliminar usuario
-  const handleDelete = async (id) => {
-    if (window.confirm("¿Seguro que deseas eliminar este usuario?")) {
-      try {
-        await axios.delete(`http://localhost:5001/api/usuarios/${id}`);
-        fetchUsuarios();
-      } catch (err) {
-        console.error("Error al eliminar usuario:", err);
-      }
-    }
+  const eliminar = async (id) => { // Elimina un usuario usando su ID y recarga la lista para mostrar los cambios.
+    await axios.delete(`http://localhost:5001/api/usuarios/${id}`);
+    cargarUsuarios();
   };
 
   return (
-    <div className="container">
-      <h2>Gestión de Usuarios</h2>
+    <div>
+      <h2>Usuarios</h2>
 
-      {/* 🟢 FORMULARIO PRINCIPAL */}
-      <form className="formulario" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Teléfono"
-          value={telefono}
-          onChange={(e) => setTelefono(e.target.value)}
-          required
-        />
-        <button type="submit">{editId ? "Actualizar" : "Guardar"}</button>
-      </form>
+      <UserForm  // Inserto el formulario, pasándole funciones y datos que necesita para crear o editar usuarios.
+        recargar={cargarUsuarios} // Es que me permite que el formulario vuelva  a traer a los usuarios
+        usuarioEditando={usuarioEditando} // Es la del usuario que estoy editando
+        setUsuarioEditando={setUsuarioEditando} // Para cambiar a ese usuario que estoy editando
+      />
 
-      {/* 🧾 TABLA DE USUARIOS */}
-      <table className="tabla">
+      <table> 
         <thead>
           <tr>
-            <th>ID</th>
             <th>Nombre</th>
             <th>Email</th>
             <th>Teléfono</th>
@@ -108,19 +40,14 @@ function UserList() {
           </tr>
         </thead>
         <tbody>
-          {usuarios.map((u) => (
-            <tr key={u.id}>
-              <td>{u.id}</td>
+          {usuarios.map((u) => ( // Este es el que recorre el array
+            <tr key={u.id}> 
               <td>{u.nombre}</td>
               <td>{u.email}</td>
               <td>{u.telefono}</td>
               <td>
-                <button className="editar" onClick={() => handleEdit(u)}>
-                  Editar
-                </button>
-                <button className="eliminar" onClick={() => handleDelete(u.id)}>
-                  Eliminar
-                </button>
+                <button onClick={() => setUsuarioEditando(u)}>Editar</button> 
+                <button onClick={() => eliminar(u.id)}>Eliminar</button> 
               </td>
             </tr>
           ))}

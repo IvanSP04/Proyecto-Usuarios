@@ -1,9 +1,5 @@
 import React from "react";
-// Importamos las herramientas que permiten manejar "rutas" o pantallas en React
-// BrowserRouter: le dice a React que vamos a usar navegación por rutas
-// Routes: agrupa todas las rutas que tendrá la app
-// Route: define una ruta específica (por ejemplo, "/" o "/usuarios")
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";// BrowserRouter: le dice a React que vamos a usar navegación por rutas
 import Login from "./components/Login";
 import UserList from "./components/UserList";
 import './styles.css';
