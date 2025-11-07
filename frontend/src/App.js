@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import UserList from "./components/UserList";
 import './styles.css';
 import Header from './components/Header';
+import AddUser from "./components/AddUser";
 
 
 
@@ -25,10 +26,12 @@ function App() {
 
 
         {/* Rutas de la aplicación */}
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/usuarios" element={<UserList />} />
-        </Routes>
+<Routes>
+  <Route path="/" element={<Login />} />
+  <Route path="/usuarios" element={<UserList />} />
+  <Route path="/agregar" element={<AddUser />} />
+</Routes>
+
       </div>
     </Router>
   );
