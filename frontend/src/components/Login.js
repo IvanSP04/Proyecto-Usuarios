@@ -1,38 +1,40 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Para hacer peticiones al backend
+import { useNavigate } from 'react-router-dom'; // Para cambiar de página
 
-function Login() {
-  const [esRegistro, setEsRegistro] = useState(false);
-  const [nombre, setNombre] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [mensaje, setMensaje] = useState('');
-  const navigate = useNavigate();
+function Login() { // Componente principal del Login/Registro
+  const [esRegistro, setEsRegistro] = useState(false); // Controla si estoy en modo registro o login
+  const [nombre, setNombre] = useState(''); // Guarda el nombre del usuario
+  const [email, setEmail] = useState(''); // Guarda el email del usuario
+  const [telefono, setTelefono] = useState(''); // Guarda el telefono del usuario
+  const [password, setPassword] = useState(''); // Guarda la contraseña del usuario
+  const [mensaje, setMensaje] = useState(''); // Guarda los mensajes de éxito o error
+  const navigate = useNavigate(); // Para redirigir a otras páginas
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e) => { // Función que se ejecuta al enviar el formulario
+    e.preventDefault(); // Evita que la página se recargue
     
-    if (esRegistro) {
-      axios.post('http://localhost:5001/api/registro', { nombre, email, password })
-        .then(() => {
-          setMensaje("Registro exitoso");
-          setEsRegistro(false);
-          setNombre('');
-          setEmail('');
-          setPassword('');
+    if (esRegistro) { // Si estoy en modo registro
+      axios.post('http://localhost:5001/api/registro', { nombre, email, telefono, password }) // Envía los datos al backend
+        .then(() => { // Si el registro es exitoso
+          setMensaje("Registro exitoso"); // Muestra mensaje de éxito
+          setEsRegistro(false); // Cambia a modo login
+          setNombre(''); // Limpia el campo nombre
+          setEmail(''); // Limpia el campo email
+          setTelefono(''); // Limpia el campo telefono
+          setPassword(''); // Limpia el campo contraseña
         })
-        .catch(() => {
-          setMensaje("Error al registrar");
+        .catch(() => { // Si hay error en el registro
+          setMensaje("Error al registrar"); // Muestra mensaje de error
         });
-    } else {
-      axios.post('http://localhost:5001/api/login', { email, password })
-        .then((res) => {
-          setMensaje("Bienvenido " + res.data.usuario.nombre);
-          setTimeout(() => navigate('/usuarios'), 1000);
+    } else { // Si estoy en modo login
+      axios.post('http://localhost:5001/api/login', { email, password }) // Envía email y contraseña al backend
+        .then((res) => { // Si el login es exitoso
+          setMensaje("Bienvenido " + res.data.usuario.nombre); // Muestra mensaje de bienvenida
+          setTimeout(() => navigate('/usuarios'), 1000); // Redirige a la página de usuarios después de 1 segundo
         })
-        .catch(() => {
-          setMensaje("Error al iniciar sesión");
+        .catch(() => { // Si hay error en el login
+          setMensaje("Error al iniciar sesión"); // Muestra mensaje de error
         });
     }
   };
@@ -42,31 +44,43 @@ function Login() {
       <h2>{esRegistro ? 'Registro' : 'Iniciar Sesión'}</h2>
       
       <form onSubmit={handleSubmit}>
-        {esRegistro && (
-          <div>
+        {esRegistro && ( // Solo muestra el campo nombre si estoy en modo registro
+          <>
             <label>Nombre:</label>
             <input
               type="text"
               value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
+              onChange={(e) => setNombre(e.target.value)} // Actualiza el valor del nombre
               required
             />
-          </div>
+          </>
         )}
 
         <label>Correo:</label>
         <input
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)} // Actualiza el valor del email
           required
         />
+
+        {esRegistro && ( // Solo muestra el campo teléfono si estoy en modo registro
+          <>
+            <label>Teléfono:</label>
+            <input
+              type="text"
+              value={telefono}
+              onChange={(e) => setTelefono(e.target.value)} // Actualiza el valor del teléfono
+              required
+            />
+          </>
+        )}
 
         <label>Contraseña:</label>
         <input
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)} // Actualiza el valor de la contraseña
           required
         />
 
@@ -79,7 +93,7 @@ function Login() {
 
       <p>
         {esRegistro ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}
-        <button onClick={() => setEsRegistro(!esRegistro)}>
+        <button onClick={() => setEsRegistro(!esRegistro)}> 
           {esRegistro ? 'Iniciar sesión' : 'Registrarse'}
         </button>
       </p>
